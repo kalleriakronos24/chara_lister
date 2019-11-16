@@ -2,7 +2,7 @@
 
 **What's this app used for ?**
   > Just a simple chara lister ( Granblue Fantasy ) made with MERN Stack
-  > For learning purposes, any suggestion are welcomed
+  - > For learning purposes, any suggestion are welcomed
   
  **This App Contains**
   - React.js
