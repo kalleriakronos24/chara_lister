@@ -13,7 +13,8 @@
   - ~~Bad UI Design lol~~
   
   **How to use ?**
-  First of all u need to Install 
+  First of all u need to Install
+  - run ``npm install`` to install all dependencies
   - Redis [For Windows](https://github.com/dmajkic/redis/downloads) ~~this is optional because by default i turned off the caching system~~
   - [Robo Mongo 3T](https://robomongo.org/) or u can use Mongo DB Atlas ~~go to server folder and look for mongodb url in index.js change it with your own~~
   - Make sure MongoDB installed in your Computer
