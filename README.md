@@ -11,7 +11,7 @@
   - Redis Caching
   - MongoDB 
   - GraphQL and REST API
-  ~~Ignores the Bad UI Design~~
+  - ~~Ignores the Bad UI Design~~
   
   **How to use ?**
   First of all u need to Install 
