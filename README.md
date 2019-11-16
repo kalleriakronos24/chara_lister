@@ -1,6 +1,6 @@
 ## Chara Lister v0.1
 
-**What's this app used for ?**
+**What's this ?**
   > Just a simple chara lister ( Granblue Fantasy ) made with MERN Stack
   
  **This App Contains**
