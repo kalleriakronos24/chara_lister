@@ -1,0 +1,431 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    background: rgb(27, 24, 24);
+}
+*{
+    margin:0;
+    padding: 0;
+}
+
+.header{
+    position: absolute;
+    top: 11%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 99%;
+    font-size: 24px;
+    color: white;
+    font-family: Calibri;
+}
+
+.header ul,li,a {
+    text-decoration: none;
+    display: inline-block;
+    border-bottom: 1px solid honeydew;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-family: Calibri;
+    font-size: 24px;
+    border-bottom: 1px solid honey;
+}
+
+.hero-container{
+    position: relative;
+    top: 390px;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    display: inline-grid;
+    height: 420px;
+    width: 25%;
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 10px;
+    margin-bottom: 60px;
+    overflow: hidden;
+}
+.hero-container:hover{
+    border-left: 1px solid honeydew;
+    border-top: 1px solid honeydew;
+    border-bottom: 1px solid honeydew;
+    border-right: 1px solid honeydew;
+    opacity: 1;
+    transition: border-top 3s, border-bottom 3s, border-left 1s, border-right 1s, opacity 0.1s ease-in-out;
+}
+
+.hero-container > .hero-name{
+    display: inline-block;
+    text-decoration: none;
+    overflow: hidden;
+    margin-top: 300px;
+    text-align: center;
+    font-family: Calibri;
+    text-transform: capitalize;
+    font-size: 40px;
+    font-weight: 500;
+    cursor: pointer;
+    color: honeydew;
+    opacity: 0;
+}
+.hero-container > .hero-name:hover{
+    margin-top: 300px;
+    margin-left: 3px;
+    opacity: 1;
+    transition: margin-top 1s, margin-left 1s, opacity 1s ease-in-out;
+}
+
+.details-hero{
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    height: 70%;
+    width: 80%;
+}
+
+.container-img{
+    margin-top: 10px;
+    border: 1px solid honeydew;
+    height: 80%;
+    width: 30%;
+}
+
+.description{
+    position: absolute;
+    border-bottom: 0.1px solid honeydew;
+    color: white;
+    font-size:16px;
+    font-family: Arial;
+    margin-left: 400px;
+    margin-top: -350px;
+}
+
+.description-text-field{
+    border-bottom: 1px solid honeydew;
+    height: 40%;
+    width: 60%;
+    position: absolute;
+    margin-left: 400px;
+    margin-top: -320px;
+    font-family: Calibri;
+    font-size: 15.4px;
+}
+.description-text-field > .desc-text{
+    text-align: left;
+    display: inline-block;
+    outline: none;
+    font-size: 17px;
+    font-family: Calibri;
+    color: white;
+    width: 100%;
+    word-wrap: break-word;
+}
+.skills{
+    position: absolute;
+    margin-left: 400px;
+    margin-top: -120px;
+    border-bottom: 0.1px solid honeydew;
+    font-size: 16px;
+    font-family: Arial;
+    color: white;
+}
+
+
+.skill-list-container{
+    position: relative;
+    margin-left: 400px;
+    margin-top: -90px;
+    width: 20%;
+}
+.skill-list-container > .skills-list{
+    position: relative;
+    display: block;
+    text-align: center;
+    height: 30%; 
+    color: white;
+    width: 100%;
+    border-bottom: 1px solid honeydew;
+    font-family: Calibri;
+    font-size: 15.4px;
+    line-height: 40px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.element-text{
+    margin-left: 650px;
+    border-bottom: 0.1px solid honeydew;
+    position: absolute;
+    margin-top: -115px;
+    font-size: 16px;
+    font-family: Arial;
+    color: white;
+}
+
+.element-icon-name{
+    margin-left: 650px;
+    margin-top: -90px;
+    font-size: 15.4px;
+    position: absolute;
+    color: white;
+    font-family: Calibri;
+}
+.race-text{
+    margin-left: 850px;
+    border-bottom: 0.1px solid honeydew;
+    position: absolute;
+    color: white;
+    margin-top: -115px;
+    font-size: 16px;
+    font-family: Arial;
+}
+.race-name{
+    margin-left: 850px;
+    margin-top: -90px;
+    font-size: 15.4px;
+    position: absolute;
+    color: white;
+    font-family: Calibri;
+}
+
+.container-add-hero{
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60%;
+    width: 80%;
+    border-left: 0.1px solid honeydew;
+    position: absolute;
+}
+.container-add-hero > input{
+    margin-left: 40px;
+    display: block;
+    height: 30px;
+    width: 180px;
+    border: 1px solid rgb(110, 110, 245);
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 23px;
+}
+.container-add-hero > label{
+    color: white;
+    margin-top: 10px;
+    margin-left: 40px;
+}
+.container-add-hero > label > button{
+    margin-top: 10px;
+    height: 23px;
+    line-height: 20px;
+    background: rgb(145, 120, 120);
+    border:1px solid honeydew;
+    width: 40px;
+    cursor: pointer;
+    border-radius: 2px;
+    color: white;
+    font-size: 16px;
+}
+.container-add-hero > .add-more-skills-field > .add-more-skills-input{
+    margin-top: 20px;
+    margin-left: 40px;
+    display: block;
+    height: 30px;
+    width: 180px;
+    border: 1px solid rgb(110, 110, 245);
+    color: black;
+    cursor: pointer;
+    font-size: 13px;
+}
+.container-add-hero > .add-more-skills-field > .add-more-skills-label {
+    display: block;
+    margin-left: 40px;
+    color: white;
+    margin-top: 10px;
+}
+
+.container-add-hero > .add-more-skills-field > .add-more-skills-label > button{
+    height: 23px;
+    line-height: 20px;
+    width: 40px;
+    cursor: pointer;
+    background: rgb(145, 120, 120);
+    border-radius: 2px;
+    border:1px solid honeydew;
+    color: white;
+}
+
+.container-add-hero > .add-hero-button-submit {
+    height: 30px;
+    width: 100px;
+    border: 1px solid honeydew;
+    background: rgb(41, 197, 111);;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    margin-left: 230px;
+    border-radius: 2px;
+    cursor: pointer;
+    line-height: 20px;
+}
+.container-add-hero > .add-hero-button-reset {
+    height: 30px;
+    width: 100px;
+    border: 1px solid honeydew;
+    background: rgb(230, 60, 38);;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    margin-left: 30px;
+    border-radius: 2px;
+    cursor: pointer;
+    line-height: 20px;
+}
+.add-button-container{
+    position: absolute;
+    top: 74%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+}
+.add-new-skills{
+    margin-top: -310px;
+    position: absolute;
+    display: inline-block;
+    margin-left: 210px;
+    cursor: pointer;
+    background: rgb(91, 125, 238);
+    border-radius: 2px;
+    border: 1px solid bisque;
+    color: white;
+    font-size: 12px;
+    height: 36px;
+    width: 120px;
+}
+.add-new-passives{
+    margin-top: -310px;
+    position: absolute;
+    display: inline-block;
+    margin-left: 350px;
+    cursor: pointer;
+    border-radius: 2px;
+    border: 1px solid bisque;
+    background: rgb(91, 125, 238);
+    color: white;
+    font-size: 12px;
+    height: 36px;
+    width: 120px;
+}
+.add-new-races{
+    margin-top: -310px;
+    position: absolute;
+    display: inline-block;
+    margin-left: 490px;
+    cursor: pointer;
+    background: rgb(91, 125, 238);
+    color: white;
+    font-size: 12px;
+    height: 36px;
+    border-radius: 2px;
+    border: 1px solid bisque;
+    width: 120px;
+}
+
+.hero-index{
+    position: absolute;
+    border-left: 0.1px solid honeydew;
+    top: 55%;
+    left: 71%;
+    transform: translate(-50%, -50%);
+    height: 60%;
+    width: 30%;
+    color: white;
+}
+
+.added-hero-container{
+    height: 90%;
+    margin-left: 50px;
+    width: 120%;
+}
+.hero-index > .added-hero-container > .added-hero{
+    position: relative;
+    border: 1px solid rgb(110, 110, 245);
+    display: inline-block;
+    height: 100px;
+    border-radius: 2px;
+    width: 150px;
+    margin-left: 7px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-top: 7px;
+    text-transform: capitalize;
+    text-align: center;
+}
+.hero-index > .added-hero-container > .added-hero > .added-hero-name{
+    font-size: 15px;
+    line-height: 50px;
+    font-family: Calibri;
+    display: inline-block;
+    text-transform: capitalize;
+}
+.hero-index > .added-hero-container > .added-hero > .added-hero-skills{
+    display: block;
+    font-family: Calibri;
+    font-size: 15px; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: inherit;
+}
+.hero-index > .added-hero-container > .added-hero > .dot-sign{
+    font-size: 15px;
+    font-family: Calibri;
+}
+
+.is-hidden{
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: visbility 5s opacity 5s;
+}
+
+.preloader{
+    height: 100%;
+    width: 100%;
+    background: rgb(27, 24, 24);
+    position: absolute;
+    z-index: 10;
+    display: block;
+    opacity: 1;
+}
+
+.preloader > .preloader-text{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    align-items: center;
+    position: absolute;
+    display: inline-block;
+    font-size: 24px;
+    font-family: Arial;
+}
+
+.preloader-is-done{
+    opacity: 0;
+    display: none;
+    transition: opacity 2s, display 20s ease-out;
+}
+.preloader-is-done > .preloader-text-is-done{
+    left: 0%;
+    opacity: 0;
+    display: none;
+    transition: left 2s, opacity 2s, display 2s ease-out;
+}

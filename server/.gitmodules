@@ -1,0 +1,3 @@
+[submodule "chara_lister"]
+	path = chara_lister
+	url = https://github.com/kalleriakronos24/chara_lister.git
