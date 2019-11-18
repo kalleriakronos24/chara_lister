@@ -10,7 +10,6 @@
   - Redis Caching
   - MongoDB 
   - GraphQL and REST API
-  - ~~Bad UI Design lol~~
   
   **How to use ?**
   First of all u need to Install
