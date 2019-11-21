@@ -1,5 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import Header from '../header/index';
+import propTypes from 'prop-types'
 
 export default class AddNewHero extends React.Component {
     constructor(props){
@@ -10,9 +12,15 @@ export default class AddNewHero extends React.Component {
             mana : 100,
             skills : [{ skill_name : "" }],
             passives : [{ passive_a : "", passive_b : "" }],
-            thumb : "",
+            sprite : "",
             heros : [],
-            isLoading : true
+            isLoading : true,
+            thumbnail : "",
+            about : '',
+            elements : [{
+                element_name : '',
+                icon : ''
+            }]
         }
     }
 
@@ -56,53 +64,37 @@ export default class AddNewHero extends React.Component {
     }
      handleSubmit = async event => {
         event.preventDefault();
-        const { hero_name, skills, hp, mana, thumb } = this.state
+        const { hero_name, skills, hp, mana, sprite, thumbnail, about} = this.state
 
        var skill = [];
        for(var i in skills){
             skill.push(skills[i])
        }
-//        const query = {
-
-//         query : `
-//         mutation createHeroMutation($skills : [{ skill_name : String }]){ 
-//             createHero(name : "${hero_name}", hp: ${hp}, mana : ${mana}, skills : $skills ){
-//                 name
-//                 hp
-//                 mana
-//                 skills{
-//                     skill_name
-//                 }
-//             }
-//         }
-//     `
-// }
 
     const formdata = new FormData();
-    const thumb_arr = [];
-    
+
     formdata.append('hero_name', hero_name);
     formdata.append('hp', hp);
     formdata.append('mana', mana);
-    formdata.append('skills', skill)
-    
-    for(const key of Object.keys(thumb)){
-        thumb_arr.push(thumb[key])
-    }
-    formdata.append('thumbnail', thumb);
-        console.log(thumb_arr);
-        console.log(thumb)
+    formdata.append('about', about)
 
-        fetch('http://localhost:3005/api_hero/add-new-hero', {
-            method : "POST",
-            mode : 'no-cors',
-            body : formdata
-        })
-        .then(res => {
-            return res.json();
-        })
+    for(let x of Object.keys(thumbnail)){
+        formdata.append('thumbnail', thumbnail[x])
+        console.log(thumbnail[x])
+    }
+
+    for(var j in skills){
+        formdata.append('skills[]', JSON.stringify(skills[j]))
+    }
+    for(let key of Object.keys(sprite)){
+        formdata.append('sprite', sprite[key]);
+        console.log(sprite[key])
+    }
+
+        axios.post('http://localhost:3005/api_hero/add-new-hero', formdata, {})
         .then(res => {
             console.log(res);
+            return res.json();
         })
         .catch(err => {
             console.log(err);
@@ -119,8 +111,14 @@ export default class AddNewHero extends React.Component {
     }
 
     handleAddMoreSkills = () => {
+        const { skills } = this.state
+
+        if(skills.length > 3){
+            return 3;
+        }
+
         this.setState({
-            skills : this.state.skills.concat([{ skill_name : "" }])
+            skills : skills.concat([{ skill_name : "" }])
         })
     }
 
@@ -129,22 +127,32 @@ export default class AddNewHero extends React.Component {
             skills: this.state.skills.filter((s, i) => index !== i)
         })
     }
-
+    handleMainImage = event => {
+        this.setState({
+            thumbnail : event.target.files
+        })
+    }
     handleHeroNameChange = event => {
         this.setState({
             hero_name : event.target.value
         })
     }
 
-    handleThumbnailChange = e => {
+    handleSpriteChange = e => {
         this.setState({
-            thumb : e.target.value
+            sprite : e.target.files
         })
     }
 
     handleAddMorePassives = () => {
+        const { passives } = this.state
+
+        if(passives.length > 2){
+            return 2;
+        }
+
         this.setState({
-            passives : this.state.passives.concat([{ passive_a : "", passive_b : "" }])
+            passives : passives.concat([{ passive_a : "", passive_b : "" }])
         })
     }
 
@@ -168,7 +176,11 @@ export default class AddNewHero extends React.Component {
             passives : this.state.passives.filter((p, i) =>  index !== i )
         })
     }
-
+    handleAboutChange = event => {
+        this.setState({
+            about: event.target.value
+        })
+    }
     handleResetButton = () => {
         this.setState({
             hero_name : '',
@@ -179,6 +191,17 @@ export default class AddNewHero extends React.Component {
                 passive_a : '',
                 passive_b : ''
             }]
+        })
+    }
+    handleAddMoreElements = () => {
+        const { elements } = this.state
+
+        if(elements.length > 1){
+            return 1;
+        }
+
+        this.setState({
+            elements : elements.concat([{ element_name : '', icon : ''}])
         })
     }
 
@@ -194,33 +217,74 @@ export default class AddNewHero extends React.Component {
             tar="Home"
             about="What's this ?"
             />
-
+            
+                <div className="modal">
+                        <h2 className="modal-headings">Characther's Passives<button className="modal-plus-btn">+</button></h2>
+                </div>
+            
+            
 
             <form onSubmit={this.handleSubmit} className="container-add-hero">
                 
-                <label>Hero Name</label>
-                <input type="text" name="hero-name" autoComplete="off" onChange={this.handleHeroNameChange} value={this.state.hero_name} placeholder="Ex. Gratia" />
 
+                <div className="chara-name-container">
+
+                <label className="chara-name-label">Hero Name</label>
+                <input type="text" name="hero-name" autoComplete="off" className="chara-name-input" onChange={this.handleHeroNameChange} value={this.state.hero_name} placeholder="Ex. Gratia" />
+
+                </div>
                 {this.state.skills.map((skill, index) => (
-                    <div className="add-more-skills-field" key={index}>
-                <label className="add-more-skills-label">Skills <button className="add-more-skills-decrease" type="button" onClick={this.handleRemoveSkills(index)}>-</button></label>
-                <input className="add-more-skills-input" type="text" onChange={this.handleSkillsChange(index)} placeholder={`Skill #${index + 1}`} value={skill.skill_name} name="hero-name" />
+                    <div className="skills-container" key={index}>
+                <label className="skills-label">Skills <button className="btn-modal-skills" type="button" onClick={this.handleRemoveSkills(index)}>+</button></label>
+                <input className="skills-input" autoComplete="off" type="text" onChange={this.handleSkillsChange(index)} placeholder={`Skill #${index + 1}`} value={skill.skill_name} name="hero-name" />
                 </div>
                     ))}
                 
                 {this.state.passives.map((p, i) => (
-                    <div className="add-more-skills-field" key={i}>
-                <label className="add-more-skills-label">Passives <button onClick={this.handleRemovePassive(i)} className="add-more-skills-decrease">-</button></label>
-                <input type="text" className="add-more-skills-input" onChange={this.handlePassiveAChange(i)} value={p.passive_a} placeholder={`Passive A #${i + 1}`} name="hero-name" />
-                <input type="text" className="add-more-skills-input" onChange={this.handlePassiveBChange(i)} value={p.passive_b} placeholder={`Passive B #${i + 1}`} name="hero-name" />
+                    <div className="passives-container" key={i}>
+                <label className="passives-container-label">Passives <button onClick={this.handleRemovePassive(i)} className="btn-modal-passives">+</button></label>
+                <input type="text" className="passives-container-input" autoComplete="off" onChange={this.handlePassiveAChange(i)} value={p.passive_a} placeholder={`Passive A #${i + 1}`} name="hero-name" />
                     </div>
-                ))}    
-                <label>Thumbnail  <button>-</button></label>
-                <input type="file" onChange={this.handleThumbnailChange} name="thumbnail" multiple />
+                ))}
 
-                <label>Race <button>-</button></label>
-                <input type="text" name="hero-name" />
+                <div className="main-image-container">
 
+                <label className="main-img-label">Main Image </label>
+                <input type="file" onChange={this.handleMainImage} className="main-img-input" autoComplete="off" name="thumbnail" />
+
+                </div>
+
+
+                <div className="sprites-container">
+
+                <label className="sprites-label">Battle Pose <small>( Max : 2 )</small></label>
+                <input type="file" onChange={this.handleSpriteChange} className="sprites-input" autoComplete="off" name="thumbnail" />
+
+                </div>
+
+                <div className="race-container">
+
+                <label className="race-label">Race : </label>
+                <input type="text" className="race-input" autoComplete="off" />
+
+                </div>
+               
+                
+                {
+                    this.state.elements.map((e, i) => (
+                <div className="elements-container" key={i}>
+                    <label className="elements-label">Elements <button className="btn-modal-elements">+</button></label>
+                        <input type="text" className="elements-input" onChange={this.handleAboutChange} value={e.element_name} autoComplete="off" />
+                </div>
+                    ))
+                }
+
+                <div className="about-container">
+
+                <label className="about-label">About: </label>
+                <textarea className="about-input" autoComplete="off" />
+
+                </div>
                 
                 <button className="add-hero-button-submit" type="submit">Submit</button>
                 
@@ -231,6 +295,7 @@ export default class AddNewHero extends React.Component {
                         <button type="button" onClick={this.handleAddMoreSkills} className="add-new-skills">Add New Skills</button>
                         <button type="button" onClick={this.handleAddMorePassives} className="add-new-passives">Add New Passives</button>
                         <button type="button" className="add-new-races">Add New Races</button>
+                        <button type="button" onClick={this.handleAddMoreElements} className="add-new-element">Add New Element</button>
                 </div>
             <div className="hero-index">
                 <div className="added-hero-container">
@@ -252,12 +317,12 @@ export default class AddNewHero extends React.Component {
   
                     {this.state.heros.map((h, i) => (
 
-                    <div className="added-hero">
+                    <div key={i} className="added-hero">
                         <span className="added-hero-name">
                             {h.name}
                         </span>
-                        {h.skills.map(s => (
-                        <span className="added-hero-skills">
+                        {h.skills.map((s, i) => (
+                        <span key={i} className="added-hero-skills">
                             {s.skill_name}
                         </span>
                         ))}
@@ -267,7 +332,7 @@ export default class AddNewHero extends React.Component {
                     ))}
                     <div className="added-hero">
                         <span className="added-hero-name">
-        {this.state.hero_name ? this.state.hero_name : 'Hero Name'}
+                        {this.state.hero_name ? this.state.hero_name : 'Hero Name'}
                         </span>
                         {this.state.skills.filter((sk, index) => index === 0 || index === 1).map((skill, i) => (
                             <div key={i}>

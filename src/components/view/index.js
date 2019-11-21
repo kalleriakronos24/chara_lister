@@ -9,13 +9,19 @@ export default class View extends React.Component {
       hero: {
         _id: "",
         name: "",
-        skills: []
+        skills: [],
+        thumbnail : '',
+        sprites : []
       }
     };
   }
 
   componentDidMount() {
     this.fetchHero();
+  }
+
+  handleChangeThumbnail = id => event => {
+    
   }
 
   fetchHero() {
@@ -26,6 +32,8 @@ export default class View extends React.Component {
                     getHero(get: "${this.props.match.params.id}"){
                         _id
                         name
+                        thumbnail
+                        sprite
                         skills{
                             skill_name
                         }
@@ -49,18 +57,21 @@ export default class View extends React.Component {
           hero: {
             _id: res.data.getHero._id,
             name: res.data.getHero.name,
-            skills: res.data.getHero.skills
+            skills: res.data.getHero.skills,
+            thumbnail : res.data.getHero.thumbnail,
+            sprites : res.data.getHero.sprite
           },
           isLoading: false
         });
         console.log(JSON.stringify(this.state.hero.skills));
         console.log(res);
+        console.log(this.state.thumbnail)
       })
       .catch(err => {
         console.log(err);
       });
   }
-
+  
   render() {
     const { hero } = this.state;
 
@@ -87,8 +98,17 @@ export default class View extends React.Component {
         </div>
 
         <div className="details-hero">
-          <div className="container-img"></div>
-          <span className="description">Description : </span>
+          <div className="container-img" style={{ backgroundImage : `url("${this.state.hero.thumbnail}")`, backgroundSize : 'cover' }}></div>
+          <div className="chara-sprites-container">
+            {
+                this.state.hero.sprites.map((s, i) => (
+
+              <img className="chara-sprites" alt="chara-sprites" src={s}/>
+
+                ))
+            }
+          </div>
+          <span className="description">About : </span>
           <div className="description-text-field">
             <span className="desc-text">
               qweokqwoekqowekqwoekqowkeoqwkeoqkweokqweokqweokqwoekqweokqweokqweokqweokqweokqweokqweokqwoekqweokqwoek
@@ -104,7 +124,7 @@ export default class View extends React.Component {
           </div>
 
           <span className="element-text">Element : </span>
-          <span className="element-icon-name">{hero.name}</span>
+          <span className="element-icon-name">- {hero.name}</span>
           <span className="race-text">Race : </span>
           <span className="race-name">{hero.race}</span>
         </div>

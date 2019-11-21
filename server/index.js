@@ -7,8 +7,11 @@ const graphqlSchema = require("./graphql/schema");
 const grapqlResolver = require("./graphql/resolver");
 const PORT = process.env.PORT || 3005;
 const hero_controller = require("./graphql/resolver/chara");
+const path = require('path');
 
 app.use(bodyParser.json());
+
+app.use('/public', express.static(path.join(__dirname + '/public')));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

@@ -30,14 +30,23 @@ const uuidv4 = require('uuid/v4');
         }
       })
 
-router.post('/add-new-hero', upload.array('thumbnail', 6), async (req, res, next) => {
+router.post('/add-new-hero', upload.fields([{ name : 'thumbnail', maxCount : 1}, { name : 'sprite', maxCount: 4}]), async (req, res, next) => {
+
     try{
-        console.log(req.files);
-    const reqFiles = [];
+
+    console.table(req.body);
+    console.log(req.files);
+    console.log(req.files['thumbnail'][0].filename);
+    
+    
+
+    const sprites = [];
     const url = req.protocol + '://'+ req.get('host');
-    for(var i = 0; i < req.files.length; i++){
-        reqFiles.push(url + '/public/' + req.files[i].filename)
+    for(var i = 0; i < req.files['sprite'].length; i++){
+        sprites.push(url + '/public/' + req.files['sprite'][i].filename)
     }
+
+    const thumb = req.protocol + '://' + req.get('host') + '/public/' + req.files['thumbnail'][0].filename
 
   const hero = new Hero(
     {
@@ -45,18 +54,21 @@ router.post('/add-new-hero', upload.array('thumbnail', 6), async (req, res, next
       hp: req.body.hp,
       mana: req.body.mana,
       passives: req.body.passives,
+      about : req.body.about,
       alive: true,
-      sprite : reqFiles,
+      thumbnail : thumb,
+      sprite : sprites,
       race: req.body.race,
       creator: "5dbc4237760587191851a3d9"
     }
-  );
-
-  for (var x in req.body.skills) {
-    hero.skills.push(req.body.skills[x]);
+  ); 
+    
+  for(var i in req.body.skills){
+    hero.skills.push(JSON.parse(req.body.skills[i]));
   }
 
-  await hero.save();
+  await hero.save()
+
   res.status(200).send("OK");
 
   const creator = await Creator.findById("5dbc4237760587191851a3d9");

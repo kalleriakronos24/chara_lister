@@ -18,11 +18,13 @@ type Hero {
     name: String
     hp: Int
     mana : Int
+    sprite : [String]
     skills : [Skills]
     passives : [String]
     alive : Boolean
     race : [String]
     creator : User!
+    thumbnail : String
 }
 
 type Skills{
@@ -49,6 +51,7 @@ input addHero {
     name: String
     hp: Int
     mana : Int
+    sprite : [String]
     skills : [Skill]
     passives : [String]
     alive : Boolean

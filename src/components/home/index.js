@@ -7,7 +7,8 @@ export default class HeroList extends Component {
         super(props)
         this.state = {
             heros : [],
-            isLoading : true
+            isLoading : true,
+            isZeroResult : true
         }
     }
     componentDidMount(){
@@ -22,6 +23,8 @@ export default class HeroList extends Component {
                     Heros{
                         _id
                         name
+                        sprite
+                        thumbnail
                         skills{
                             skill_name
                             description
@@ -45,7 +48,8 @@ export default class HeroList extends Component {
         .then(res => {
             this.setState({ 
                 heros : res.data.Heros,
-                isLoading : false
+                isLoading : false,
+                isZeroResult : false
             })
         console.log(res);
         })
@@ -56,7 +60,7 @@ export default class HeroList extends Component {
 
     render() {
 
-           
+        const { isZeroResult } = this.state
         
         return (
             <>
@@ -71,20 +75,23 @@ export default class HeroList extends Component {
                     <div className={`${this.state.isLoading ? 'preloader' : 'preloader-is-done'}`}>
                         <span className={`${this.state.isLoading ? 'preloader-text' : 'preloader-text-is-done'}`}>Loading ... </span>
                     </div>
-
-            <div>
+                    
+                    <div className={`${isZeroResult ? 'result-not-found' : 'is-hidden'}`}>
+                            <span className="not-found-text">404 - Not Found</span>
+                    </div>
+        <div> 
                {
                    this.state.heros.map((hero, i) => {
                        return (
-                         
-                          <div className="hero-container">
+                      
+                          <div className="hero-container" style={{ backgroundImage : `url("${hero.thumbnail}")`, backgroundSize : 'cover' }}>
                               <Link to={`/view/${hero._id}`} className="hero-name" key={hero._id}>{hero.name}</Link>
                           </div>
+                   
                        )
                    })
                }
-                
-            </div>
+         </div>
             </>
         )
     }
