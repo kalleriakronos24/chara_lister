@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import Header from '../header/index';
 import propTypes from 'prop-types'
+import ModalPassives from '../Modals/Passives'
+import ModalSkills from '../Modals/Skills'
+import ModalElements from '../Modals/Elements'
 
 export default class AddNewHero extends React.Component {
     constructor(props){
@@ -10,16 +13,16 @@ export default class AddNewHero extends React.Component {
             hero_name : "",
             hp : 100,
             mana : 100,
+            race : '',
             skills : [{ skill_name : "" }],
-            passives : [{ passive_a : "", passive_b : "" }],
+            passives : [{ passive_name : "" }],
             sprite : "",
             heros : [],
             isLoading : true,
             thumbnail : "",
             about : '',
             elements : [{
-                element_name : '',
-                icon : ''
+                element_name : ''
             }]
         }
     }
@@ -64,18 +67,19 @@ export default class AddNewHero extends React.Component {
     }
      handleSubmit = async event => {
         event.preventDefault();
-        const { hero_name, skills, hp, mana, sprite, thumbnail, about} = this.state
+        const { hero_name, skills, hp, mana, sprite, thumbnail, about, race, elements, passives } = this.state
 
        var skill = [];
        for(var i in skills){
             skill.push(skills[i])
-       }
+       } 
 
     const formdata = new FormData();
 
     formdata.append('hero_name', hero_name);
     formdata.append('hp', hp);
     formdata.append('mana', mana);
+    formdata.append('race', race);
     formdata.append('about', about)
 
     for(let x of Object.keys(thumbnail)){
@@ -85,6 +89,12 @@ export default class AddNewHero extends React.Component {
 
     for(var j in skills){
         formdata.append('skills[]', JSON.stringify(skills[j]))
+    }
+    for( var s in passives ) {
+        formdata.append('passives[]', JSON.stringify(passives[s]))
+    }
+    for( var e in elements ){
+        formdata.append('elements[]', JSON.stringify(elements[e]))
     }
     for(let key of Object.keys(sprite)){
         formdata.append('sprite', sprite[key]);
@@ -114,11 +124,16 @@ export default class AddNewHero extends React.Component {
         const { skills } = this.state
 
         if(skills.length > 3){
-            return 3;
+            return;
         }
 
         this.setState({
             skills : skills.concat([{ skill_name : "" }])
+        })
+    }
+    handleRaceChange = event => {
+        this.setState({
+            race : event.target.value
         })
     }
 
@@ -148,11 +163,11 @@ export default class AddNewHero extends React.Component {
         const { passives } = this.state
 
         if(passives.length > 2){
-            return 2;
+            return;
         }
 
         this.setState({
-            passives : passives.concat([{ passive_a : "", passive_b : "" }])
+            passives : passives.concat([{ passive_name: '' }])
         })
     }
 
@@ -160,22 +175,17 @@ export default class AddNewHero extends React.Component {
         var val = event.target.value;
         console.log(val);
         this.setState(prev => ({
-            passives : prev.passives.map((p, i) => ( index === i ? Object.assign(p, { passive_a : val }) : p ))
+            passives : prev.passives.map((p, i) => ( index === i ? Object.assign(p, { passive_name : val }) : p ))
         }))
     }
     
-    handlePassiveBChange = index => event => {
-        var val = event.target.value;
-        this.setState(prev => ({
-            passives : prev.passives.map((p, i) => ( index === i ? Object.assign(p, { passive_b : val } ) : p ))
-        }))
-    }
 
     handleRemovePassive = index => () => {
         this.setState({
             passives : this.state.passives.filter((p, i) =>  index !== i )
         })
     }
+
     handleAboutChange = event => {
         this.setState({
             about: event.target.value
@@ -193,21 +203,84 @@ export default class AddNewHero extends React.Component {
             }]
         })
     }
+    
     handleAddMoreElements = () => {
+
+
+        console.log('clicked ?');
+        
         const { elements } = this.state
 
-        if(elements.length > 1){
-            return 1;
+        if(elements.length > 2){
+            return 2;
         }
 
         this.setState({
-            elements : elements.concat([{ element_name : '', icon : ''}])
+            elements : elements.concat([{ element_name: '' }])
         })
+    }
+
+    handleElementsChange = index => event => {
+        const val = event.target.value;
+        this.setState(prev => ({
+            elements : prev.elements.map((e, i) => ( index === i ? Object.assign(e, { element_name : val }) : e ))
+        }))
+    }
+
+    handleRemoveElements = idx => () => {
+        const { elements } = this.state;
+        
+        this.setState({
+            elements : elements.filter((e, i) => idx !== i)
+        })
+        
+    }
+
+    openPassiveModal = event => {
+
+        event.preventDefault();
+        document.getElementById('modal-overlay').style.display = "block"
+        document.getElementById('modal-overlay').style.visibility = "visible"
+        document.getElementById('modal-overlay').style.opacity = 1;
+        var modal = document.getElementById('modal-overlay');
+
+        window.onclick = function(e){
+            if ( e.target === modal) modal.style.display = "none"
+        }
+    }
+
+    openSkillModal = event => {
+
+        event.preventDefault();
+        document.getElementById('modal-overlay skills').style.display = "block"
+        document.getElementById('modal-overlay skills').style.visibility = "visible"
+        document.getElementById('modal-overlay skills').style.opacity = 1;
+        var modal = document.getElementById('modal-overlay skills');
+
+        window.onclick = function(e){
+            if ( e.target === modal ) modal.style.display = "none"
+        }
+    }
+
+    openElementsModal = event => {
+
+        event.preventDefault();
+        document.getElementById('modal-overlay elements').style.display = "block"
+        document.getElementById('modal-overlay elements').style.visibility = "visible"
+        document.getElementById('modal-overlay elements').style.opacity = 1;
+        var modal = document.getElementById('modal-overlay elements');
+
+        window.onclick = function(e){
+            if ( e.target === modal ) modal.style.display = "none"
+        }
+        
     }
 
 
     render(){
-            
+        
+        const { passives, skills, elements, race } = this.state;
+
         return ( 
             
             <>
@@ -218,11 +291,33 @@ export default class AddNewHero extends React.Component {
             about="What's this ?"
             />
             
-                <div className="modal">
-                        <h2 className="modal-headings">Characther's Passives<button className="modal-plus-btn">+</button></h2>
-                </div>
+            <ModalElements
+            elements_length={elements}
+            handleChange={this.handleElementsChange}
+            modal_headings="Elements"
+            remove={this.handleRemoveElements}
+            onClick={this.handleAddMoreElements}
             
+            />
             
+            <ModalPassives
+            passive_length={passives}
+            passive_change_handler={this.handlePassiveAChange}
+            modal_headings="Passives"
+            handleRemovePassive={this.handleRemovePassive}
+            onClick={this.handleAddMorePassives}
+            />
+
+            <ModalSkills
+            skills_length={skills}
+            skill_change_handler={this.handleSkillsChange}
+            modal_headings="Skills"
+            handleRemoveSkills={this.handleRemoveSkills}
+            onClick={this.handleAddMoreSkills}
+            
+            />
+             
+
 
             <form onSubmit={this.handleSubmit} className="container-add-hero">
                 
@@ -233,19 +328,16 @@ export default class AddNewHero extends React.Component {
                 <input type="text" name="hero-name" autoComplete="off" className="chara-name-input" onChange={this.handleHeroNameChange} value={this.state.hero_name} placeholder="Ex. Gratia" />
 
                 </div>
-                {this.state.skills.map((skill, index) => (
-                    <div className="skills-container" key={index}>
-                <label className="skills-label">Skills <button className="btn-modal-skills" type="button" onClick={this.handleRemoveSkills(index)}>+</button></label>
-                <input className="skills-input" autoComplete="off" type="text" onChange={this.handleSkillsChange(index)} placeholder={`Skill #${index + 1}`} value={skill.skill_name} name="hero-name" />
+
+                    <div className="skills-container">
+                <label className="skills-label">Skills </label>
+                <input className="skills-input" autoComplete="off" onClick={this.openSkillModal} type="button" value="Click Here.." name="hero-name" />
                 </div>
-                    ))}
                 
-                {this.state.passives.map((p, i) => (
-                    <div className="passives-container" key={i}>
-                <label className="passives-container-label">Passives <button onClick={this.handleRemovePassive(i)} className="btn-modal-passives">+</button></label>
-                <input type="text" className="passives-container-input" autoComplete="off" onChange={this.handlePassiveAChange(i)} value={p.passive_a} placeholder={`Passive A #${i + 1}`} name="hero-name" />
+                    <div className="passives-container">
+                <label className="passives-container-label">Passives</label>
+                <input type="button" className="passives-container-input" onClick={this.openPassiveModal} autoComplete="off" value="Click Here.." placeholder="" name="hero-name" />
                     </div>
-                ))}
 
                 <div className="main-image-container">
 
@@ -258,31 +350,27 @@ export default class AddNewHero extends React.Component {
                 <div className="sprites-container">
 
                 <label className="sprites-label">Battle Pose <small>( Max : 2 )</small></label>
-                <input type="file" onChange={this.handleSpriteChange} className="sprites-input" autoComplete="off" name="thumbnail" />
+                <input type="file" onChange={this.handleSpriteChange} className="sprites-input" autoComplete="off" name="thumbnail" multiple />
 
                 </div>
 
                 <div className="race-container">
 
                 <label className="race-label">Race : </label>
-                <input type="text" className="race-input" autoComplete="off" />
+                <input type="text" onChange={this.handleRaceChange} value={race} className="race-input" autoComplete="off" />
 
                 </div>
                
-                
-                {
-                    this.state.elements.map((e, i) => (
-                <div className="elements-container" key={i}>
+                  
+                <div className="elements-container">
                     <label className="elements-label">Elements <button className="btn-modal-elements">+</button></label>
-                        <input type="text" className="elements-input" onChange={this.handleAboutChange} value={e.element_name} autoComplete="off" />
+                        <input type="button" className="elements-input" onClick={this.openElementsModal} value="Click Here.." autoComplete="off" />
                 </div>
-                    ))
-                }
 
                 <div className="about-container">
 
                 <label className="about-label">About: </label>
-                <textarea className="about-input" autoComplete="off" />
+                <textarea className="about-input" onChange={this.handleAboutChange} autoComplete="off" />
 
                 </div>
                 
@@ -295,7 +383,6 @@ export default class AddNewHero extends React.Component {
                         <button type="button" onClick={this.handleAddMoreSkills} className="add-new-skills">Add New Skills</button>
                         <button type="button" onClick={this.handleAddMorePassives} className="add-new-passives">Add New Passives</button>
                         <button type="button" className="add-new-races">Add New Races</button>
-                        <button type="button" onClick={this.handleAddMoreElements} className="add-new-element">Add New Element</button>
                 </div>
             <div className="hero-index">
                 <div className="added-hero-container">

@@ -1,10 +1,12 @@
 const Hero = require("../../models/hero");
 const User = require("../../models/user");
+const SaveItems = require('../../models/savedItems');
 
 const MappedHero = hero => {
   return {
     ...hero._doc,
-    skills: hero._doc.skills
+    skills : hero._doc.skills,
+    elements : hero._doc.elements
   };
 };
 const MappedUser = user => {
@@ -28,8 +30,16 @@ module.exports = {
   },
   getHero: async args => {
     try {
-      const heros = await Hero.findById({ _id: args.get }).populate("creator");
-      return MappedHero(heros);
+      let obj;
+      const heros = await Hero.find({ name: args.get }).populate("creator")
+      .then(res => {
+        const data = res[0];
+        obj = data; 
+      })
+      .catch(error => {
+        throw error;
+      })
+      return obj;
     } catch (err) {
       console.log(err);
       throw err;
@@ -41,12 +51,12 @@ module.exports = {
   Heros: async () => {
     try {
       const heros = await Hero.find({}).populate("creator");
-      heros.sort((a, b) => {
+      await heros.sort((a, b) => {
         return (
-          heros.indexOf(a._id.toString()) - heros.indexOf(b._id.toString())
+          heros.indexOf(a.name.toUpperCase()) - heros.indexOf(b.name.toUpperCase())
         );
       });
-      return heros.map(hero => {
+      return await heros.map(hero => {
         console.log(hero);
         return MappedHero(hero);
       });
@@ -111,6 +121,13 @@ module.exports = {
     } catch (error) {
       console.log(error);
       throw error;
+    }
+  },
+  saveChara : async args => {
+    try {
+    }
+    catch(err){
+      throw err;
     }
   }
   // end of Create //

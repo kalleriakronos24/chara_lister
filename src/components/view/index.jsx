@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../header/index";
+import Header from "../header/index.jsx";
 
 export default class View extends React.Component {
   constructor(props) {
@@ -7,11 +7,16 @@ export default class View extends React.Component {
     this.state = {
       isLoading: true,
       hero: {
-        _id: "",
         name: "",
         skills: [],
         thumbnail : '',
-        sprites : []
+        sprites : [],
+        elements : [],
+        race : '',
+        about : '',
+        params : this.props.match.params.name,
+        search : '',
+        isSearch : false
       }
     };
   }
@@ -25,14 +30,18 @@ export default class View extends React.Component {
   }
 
   fetchHero() {
-    console.log(this.props.match.params.id);
+    console.log(this.props.match.params)
     const query = {
       query: `
                 query {
-                    getHero(get: "${this.props.match.params.id}"){
-                        _id
+                    getHero(get: "${this.props.match.params.name}"){
                         name
                         thumbnail
+                        race
+                        about
+                        elements{
+                          element_name
+                        }
                         sprite
                         skills{
                             skill_name
@@ -41,9 +50,10 @@ export default class View extends React.Component {
                 }
             `
     };
-    fetch("http://localhost:3005/data/api", {
+
+    fetch('http://localhost:3005/data/api' , {
       method: "POST",
-      body: JSON.stringify(query),
+      body : JSON.stringify(query),
       headers: {
         "Content-Type": "application/json"
       }
@@ -53,35 +63,44 @@ export default class View extends React.Component {
         return res.json();
       })
       .then(res => {
+        const data = res.data.getHero;
+
         this.setState({
           hero: {
-            _id: res.data.getHero._id,
-            name: res.data.getHero.name,
-            skills: res.data.getHero.skills,
-            thumbnail : res.data.getHero.thumbnail,
-            sprites : res.data.getHero.sprite
+            name: data.name,
+            skills: data.skills,
+            elements : data.elements,
+            about : data.about,
+            race : data.race,
+            thumbnail : data.thumbnail,
+            sprites : data.sprite
           },
           isLoading: false
         });
-        console.log(JSON.stringify(this.state.hero.skills));
-        console.log(res);
-        console.log(this.state.thumbnail)
       })
       .catch(err => {
         console.log(err);
       });
   }
-  
+  handleSearch = event => {
+    this.setState({
+      search : event.target.value,
+      isSearch : true
+    })
+  }
+   
   render() {
-    const { hero } = this.state;
+    const { hero,search } = this.state;
 
     return (
       <>
         <Header
-          title={`Viewed Chara : ${hero.name}`}
+          title={`${hero.name}`}
           home="/"
           tar="Home"
-          about="What's this ?"
+          search_val={search}
+          handleChange={this.handleSearch}
+          linkTo={search}
         />
         <div
           className={`${
@@ -103,7 +122,7 @@ export default class View extends React.Component {
             {
                 this.state.hero.sprites.map((s, i) => (
 
-              <img className="chara-sprites" alt="chara-sprites" src={s}/>
+              <img className="chara-sprites" key={i} alt="chara-sprites" src={s}/>
 
                 ))
             }
@@ -111,7 +130,7 @@ export default class View extends React.Component {
           <span className="description">About : </span>
           <div className="description-text-field">
             <span className="desc-text">
-              qweokqwoekqowekqwoekqowkeoqwkeoqkweokqweokqweokqwoekqweokqweokqweokqweokqweokqweokqweokqwoekqweokqwoek
+              {hero.about ? hero.about : 'No Data Available.'}
             </span>
           </div>
 
@@ -119,14 +138,18 @@ export default class View extends React.Component {
 
           <div className="skill-list-container">
             {this.state.hero.skills.map((s, idx) => (
-              <span className="skills-list">{s.skill_name}</span>
+              <span key={idx} className="skills-list">{s.skill_name ? s.skill_name : 'No Data Available.'}</span>
             ))}
           </div>
 
           <span className="element-text">Element : </span>
-          <span className="element-icon-name">- {hero.name}</span>
+          {
+            hero.elements.map((e, i) => (
+              <span key={i} className="element-icon-name">{e.element_name ? '- ' + e.element_name : 'No Data Available.'}</span>
+            ))
+          }
           <span className="race-text">Race : </span>
-          <span className="race-name">{hero.race}</span>
+          <span className="race-name">{hero.race ? '- ' + hero.race : 'No Data Available.'}</span>
         </div>
         
       </>    

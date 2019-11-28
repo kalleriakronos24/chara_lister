@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import Hero from './components/hero/index';
-import HeroList from './components/home/index';
+import HeroList from './components/home/index.jsx';
 import './App.css';
 import { Route } from 'react-router-dom';
-import View from './components/view/index';
-import AddNewHero from './components/addNewHero/index'
+import View from './components/view/index.jsx';
+import AddNewHero from './components/addNewHero/index.jsx'
 
 export default class App extends Component {
   render(){
@@ -12,7 +11,7 @@ export default class App extends Component {
       <div>
         <Route exact path="/" component={HeroList}/>
         <Route exact path="/add-new-hero" component={AddNewHero}/>
-        <Route exact path="/view/:id" component={View}/>
+        <Route exact path="/view/:name" component={View}/>
       </div>
     )
   }

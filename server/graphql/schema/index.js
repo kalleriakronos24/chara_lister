@@ -22,9 +22,20 @@ type Hero {
     skills : [Skills]
     passives : [String]
     alive : Boolean
-    race : [String]
+    race : String!
     creator : User!
     thumbnail : String
+    about : String
+    elements : [Elements]!
+}
+type SavedItems {
+    _id : ID!
+    characters : [Hero]
+    by : User
+}
+
+type Elements{
+    element_name : String!
 }
 
 type Skills{
@@ -62,12 +73,13 @@ type RootQuery {
     Heros: [Hero!]!
     Users: [User!]!
     getUser(get: ID!): User
-    getHero(get: ID!): Hero
+    getHero(get: String!): Hero
 }
 
 type RootMutation {
     createHero(name : String, hp : Int, mana : Int, skills : [Skill], passives : [String], alive : Boolean, race : [String]): Hero
     createUser(UserInput: UserInput): User
+    saveChara(get : ID!): Hero
 } 
 
 schema {

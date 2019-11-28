@@ -50,6 +50,16 @@ body, html {
     overflow: hidden;
     opacity: 0.8;
 }
+.hero-container > .btn-save{
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    float: right;
+    background: none;
+    border: 0.1px solid honeydew;
+    color: white;
+    cursor: pointer;
+}
 .hero-container:hover{
     border-left: 1px solid honeydew;
     border-top: 1px solid honeydew;
@@ -62,7 +72,7 @@ body, html {
     display: inline-block;
     text-decoration: none;
     overflow: hidden;
-    margin-top: 300px;
+    margin-top: 200px;
     text-align: center;
     font-family: Calibri;
     text-transform: capitalize;
@@ -73,7 +83,7 @@ body, html {
     opacity: 0;
 }
 .hero-container > .hero-name:hover{
-    margin-top: 300px;
+    margin-top: 200px;
     margin-left: 3px;
     opacity: 30;
     transition: margin-top 1s, margin-left 1s, opacity 1s ease-in-out;
@@ -651,7 +661,7 @@ body, html {
     text-align: center;
 }
 
-.modal{
+.modal-overlay > .modal{
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -661,7 +671,7 @@ body, html {
     width: 30%;
     border: 1px solid honeydew;
     background: rgb(27, 24, 24);
-    z-index: 30;
+    z-index: 999999;
     overflow: hidden;
     opacity: 1;
 }
@@ -683,4 +693,104 @@ body, html {
     margin-left: 10px;
     width: 50px;
     cursor: pointer;
+}
+
+.modal > .modal-container{
+    position: absolute;
+    height: 60%;
+    top: 55%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, -50%);
+}
+.modal > .modal-container > .modal-fields > .modal-labels{
+    display: block;
+    font-size: 18px;
+    color: honeydew;
+    position: relative;
+    padding: 12px 16px;
+}
+.modal > .modal-container > .modal-fields > .modal-inputs{
+    display: block;
+    font-size: 14px;
+    color: honeydew;
+    border-top: 0px;
+    border-left: none;
+    border-right: none;
+    margin-left: 15px;
+    height: 20px;
+    background: none;
+}
+.modal > .modal-container > .modal-fields > .modal-labels > .modal-decrease-button{
+    font-size: 18px;
+    height: 25px;
+    background: none;
+    width: 40px;
+    color: white;
+    border: 0.1px solid white;
+    cursor: pointer;
+    text-align: center;
+}
+
+.modal-overlay {
+    display: none;
+    visibility: hidden;
+    position: absolute;
+    height:100%;
+    width:100%;
+    z-index: 1;
+    opacity: 1;
+    background: none;
+}
+
+.menu-bar{
+    display: inline-block;
+    position: absolute;
+    top: 25%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    height: 60px;
+    width: 430px;
+}
+.menu-bar > .filter-by-text{
+    color: white;
+    font-size: 16px;
+    text-align: left;
+    line-height: 40px;
+}
+.menu-bar > .filter-option {
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 0.1px solid honeydew;
+    background: none;
+    color:white;
+    display: inline-block;
+    margin-left: 10px;
+}
+.menu-bar > .filter-option > .opt-value{
+    color:black;
+}
+.menu-bar > .btn-confirm-filter{   
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 0.1px solid honeydew;
+    background: none;
+    color:white;
+    display: inline-block;
+    margin-left: 10px;
+    text-transform: uppercase;
+    cursor:pointer;
+}
+.search-input{
+    background: none;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 0.1px solid white;
+    color: honeydew;
+    width: 60px;
+    margin-left: -80px;
+    height: 26px;
 }

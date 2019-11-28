@@ -42,12 +42,22 @@ const HeroSchema = new Schema({
         required : true
     },
     race : {
-        type: Array,
+        type: String,
         required : true
     },
     creator : {
         type : Schema.Types.ObjectId,
         ref : 'User'
+    },
+    elements : [
+        {
+            element_name : String,
+            icon : String
+        }
+    ],
+    about : {
+        type : String,
+        required : true
     }
 
 }, {

@@ -66,17 +66,22 @@ router.post(
         name: req.body.hero_name,
         hp: req.body.hp,
         mana: req.body.mana,
-        passives: req.body.passives,
+        race : req.body.race,
         about: req.body.about,
         alive: true,
         thumbnail: thumb,
         sprite: sprites,
-        race: req.body.race,
         creator: "5dbc4237760587191851a3d9"
       });
 
       for (var i in req.body.skills) {
-        hero.skills.push(JSON.parse(req.body.skills[i]));
+       await hero.skills.push(JSON.parse(req.body.skills[i]));
+      }
+      for(var x in req.body.passives){
+       await hero.passives.push(JSON.parse(req.body.passives[x]));
+      }
+      for(var z in req.body.elements){
+       await hero.elements.push(JSON.parse(req.body.elements[z]));
       }
 
       await hero.save();
