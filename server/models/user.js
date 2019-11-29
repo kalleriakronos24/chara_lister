@@ -10,6 +10,11 @@ const UserSchema = new Schema({
     createdHero : [{
         type: Schema.Types.ObjectId,
         ref : 'Hero'
+    }],
+
+    savedHero : [{
+        type : Schema.Types.ObjectId,
+        ref : Hero
     }]
 })
 

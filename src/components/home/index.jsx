@@ -5,6 +5,7 @@ import LazyLoad from 'react-lazyload';
 import FilterOptions from '../filter/options/index';
 import Preloading from '../loader/pre/index';
 import PageNotFound from '../notfoundpage/index';
+import CHARA_API_URL from '../../api/url';
 
 export default class HeroList extends Component {
     constructor(props){
@@ -15,7 +16,8 @@ export default class HeroList extends Component {
             isZeroResult : true,
             isFilter : false,
             filter_type : '',
-            filter_opt : ''
+            filter_opt : '',
+            user_data : ''
         }
     }
     componentDidMount(){
@@ -26,6 +28,7 @@ export default class HeroList extends Component {
         event.preventDefault();
         const { heros } = this.state;
         const data = [];
+        
         heros.filter((h, i) => {
             if(idx === i){
                 data.push(h)
@@ -112,7 +115,7 @@ export default class HeroList extends Component {
             `
         }
        
-        fetch('http://localhost:3005/data/api', {
+        fetch(CHARA_API_URL, {
             method : "POST",
             headers: {
                 'Content-Type' : 'application/json'
@@ -134,6 +137,41 @@ export default class HeroList extends Component {
         })
     }
 
+    validateUser = () => {
+        const { user_data } = this.state;
+        const query = {
+            query : `
+
+            getUser(get : '5dbc4237760587191851a3d9'){
+                _id
+                name
+                savedItems{
+                    name
+                }
+            }
+
+            `
+        }
+        fetch('http://localhost:3005/data/api', {
+            method : 'POST',
+            body : JSON.stringify(query),
+            header : {
+
+            }
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(res => {
+            this.setState({
+                user_data : res.get.Users
+            })
+        })
+        .catch(error => {
+            throw error;
+        })
+    }
+
 
     render() {
 
@@ -147,6 +185,7 @@ export default class HeroList extends Component {
             tar="Add New Chara"
             home="add-new-hero"
             about="What's this ?"
+            isSearchActive={false}
             />
 
             

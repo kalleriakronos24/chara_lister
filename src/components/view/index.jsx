@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../header/index.jsx";
+import Preloading from '../loader/pre/index.jsx'
 
 export default class View extends React.Component {
   constructor(props) {
@@ -14,7 +15,6 @@ export default class View extends React.Component {
         elements : [],
         race : '',
         about : '',
-        params : this.props.match.params.name,
         search : '',
         isSearch : false
       }
@@ -30,7 +30,7 @@ export default class View extends React.Component {
   }
 
   fetchHero() {
-    console.log(this.props.match.params)
+
     const query = {
       query: `
                 query {
@@ -90,7 +90,7 @@ export default class View extends React.Component {
   }
    
   render() {
-    const { hero,search } = this.state;
+    const { hero, search, isLoading } = this.state;
 
     return (
       <>
@@ -99,22 +99,11 @@ export default class View extends React.Component {
           home="/"
           tar="Home"
           search_val={search}
-          handleChange={this.handleSearch}
+          handleChangeSearch={this.handleSearch}
           linkTo={search}
+          searchActive={true}
         />
-        <div
-          className={`${
-            this.state.isLoading ? "preloader" : "preloader-is-done"
-          }`}
-        >
-          <span
-            className={`${
-              this.state.isLoading ? "preloader-text" : "preloader-text-is-done"
-            }`}
-          >
-            Loading ...
-          </span>
-        </div>
+        {isLoading ? <Preloading/> : ''}
 
         <div className="details-hero">
           <div className="container-img" style={{ backgroundImage : `url("${this.state.hero.thumbnail}")`, backgroundSize : 'cover' }}></div>

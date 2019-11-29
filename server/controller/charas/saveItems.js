@@ -1,4 +1,4 @@
-const SaveItems = require('../../models/savedItems');
+const SaveItems = require('../../models/user');
 
 
 module.exports = async (req, res) => {
@@ -12,8 +12,7 @@ module.exports = async (req, res) => {
         const request = req.body
         console.log(request);
         const save_chara = new SaveItems({
-            by : '5dbc4237760587191851a3d9',
-            characters : data
+            savedHero : data
         })
         await save_chara.save();
         await res.status(200).send('OK')
@@ -22,4 +21,4 @@ module.exports = async (req, res) => {
         throw err;
     }
 
-}
+}  

@@ -11,7 +11,9 @@ const MappedHero = hero => {
 };
 const MappedUser = user => {
   return {
-    ...user._doc
+    ...user._doc,
+    createdHero : user._doc.createdHero,
+    savedHero : user._doc.savedHero
   };
 };
 
@@ -20,7 +22,7 @@ module.exports = {
   getUser: async args => {
     try {
       const users = await User.findById({ _id: args.get }).populate(
-        "createdHero"
+        "createdHero savedHero"
       );
       return MappedUser(users);
     } catch (err) {
