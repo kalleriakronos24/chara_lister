@@ -3,7 +3,7 @@
 **What's this ?**
   > Just a simple chara lister ( Granblue Fantasy ) made with MERN Stack
   
- **This App Contains**
+ **This App Stacks**
   - React.js
   - Node.js
   - Express.js
