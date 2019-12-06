@@ -34,7 +34,7 @@ body, html {
     border-bottom: 1px solid honey;
 }
 
-.hero-container{
+.chara-grid{
     position: relative;
     top: 390px;
     left: 20%;
@@ -50,17 +50,20 @@ body, html {
     overflow: hidden;
     opacity: 0.8;
 }
-.hero-container > .btn-save{
+.btn-save{
     height: 40px;
     width: 40px;
     text-align: center;
     float: right;
-    background: none;
+    background: rgb(56, 47, 47);
     border: 0.1px solid honeydew;
     color: white;
     cursor: pointer;
+    opacity: 10;
+    z-index: 99;
+    font-family: cursive;
 }
-.hero-container:hover{
+.chara-grid:hover{
     border-left: 1px solid honeydew;
     border-top: 1px solid honeydew;
     border-bottom: 1px solid honeydew;
@@ -68,7 +71,7 @@ body, html {
     transition: border-top 3s, border-bottom 3s, border-left 1s, border-right 1s, opacity 0.1s ease-in-out;
 }
 
-.hero-container > .hero-name{
+.chara-grid > .hero-name{
     display: inline-block;
     text-decoration: none;
     overflow: hidden;
@@ -82,7 +85,7 @@ body, html {
     color: honeydew;
     opacity: 0;
 }
-.hero-container > .hero-name:hover{
+.chara-grid > .hero-name:hover{
     margin-top: 200px;
     margin-left: 3px;
     opacity: 30;
@@ -432,12 +435,12 @@ body, html {
     color: white;
 }
 
-.added-hero-container{
+.added-chara-grid{
     height: 90%;
     margin-left: 50px;
     width: 120%;
 }
-.hero-index > .added-hero-container > .added-hero{
+.hero-index > .added-chara-grid > .added-hero{
     position: relative;
     border: 1px solid rgb(110, 110, 245);
     display: inline-block;
@@ -452,14 +455,14 @@ body, html {
     text-transform: capitalize;
     text-align: center;
 }
-.hero-index > .added-hero-container > .added-hero > .added-hero-name{
+.hero-index > .added-chara-grid > .added-hero > .added-hero-name{
     font-size: 15px;
     line-height: 50px;
     font-family: Calibri;
     display: inline-block;
     text-transform: capitalize;
 }
-.hero-index > .added-hero-container > .added-hero > .added-hero-skills{
+.hero-index > .added-chara-grid > .added-hero > .added-hero-skills{
     display: block;
     font-family: Calibri;
     font-size: 15px; 
@@ -468,7 +471,7 @@ body, html {
     overflow: hidden;
     text-transform: inherit;
 }
-.hero-index > .added-hero-container > .added-hero > .dot-sign{
+.hero-index > .added-chara-grid > .added-hero > .dot-sign{
     font-size: 15px;
     font-family: Calibri;
 }

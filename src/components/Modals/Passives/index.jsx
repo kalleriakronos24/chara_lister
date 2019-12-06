@@ -2,35 +2,19 @@ import React from 'react';
 
 
 
-export default class ModalPassives extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            modalIsHidden : false
-        }
+const ModalPassives = props => {
 
-    }
-
-    hidemodal = event => {
-        event.preventDefault();
-        document.getElementById('modal-overlay').style.display = "none"
-        document.getElementById('modal-overlay').style.visibility = "hidden"
-        document.getElementById('modal-overlay').style.opacity = 0;
-    }
-
-
-    render(){
         return (
         <>
         <div id="modal-overlay" className='modal-overlay'>
             <div id="myModal" className="modal">
-                <h2 className="modal-headings">Characther's {this.props.modal_headings}{this.props.passive_length.length > 1 ? ' ' : <button type="button" onClick={this.props.onClick} className="modal-plus-btn">+</button>}</h2>
+                <h2 className="modal-headings">Characther's {props.modal_headings}{props.passive_length.length > 1 ? ' ' : <button type="button" onClick={props.onClick} className="modal-plus-btn">+</button>}</h2>
                 <div className="modal-container">
                     {
-                        this.props.passive_length.filter((f, i) => i === 0 || i === 1).map((p, idx) => (
+                        props.passive_length.filter((f, i) => i === 0 || i === 1).map((p, idx) => (
                     <div className="modal-fields">
-                        <label className="modal-labels">Passives { idx === 0 ? ' ' : <button onClick={this.props.handleRemovePassive(idx)} type="button" class="modal-decrease-button">-</button> }</label>
-                        <input type="text" onChange={this.props.passive_change_handler(idx)} value={p.passive_a} className="modal-inputs" />
+                        <label className="modal-labels">Passives { idx === 0 ? ' ' : <button onClick={props.handleRemovePassive(idx)} type="button" class="modal-decrease-button">-</button> }</label>
+                        <input type="text" onChange={props.passive_change_handler(idx)} value={p.passive_a} className="modal-inputs" />
                     </div>
                         ))
                     }
@@ -40,5 +24,29 @@ export default class ModalPassives extends React.Component {
         </div>
         </>
         )
-    }
+}
+export default ModalPassives;
+
+export const EditModalPassives = props => {
+    console.log(props);
+    return (
+        <>
+        <div id="modal-overlay" className='modal-overlay'>
+            <div id="myModal" className="modal">
+                <h2 className="modal-headings">Characther's {props.modal_headingz}{props.passives.length > 1 ? ' ' : <button type="button" onClick={props.add_more_passive} className="modal-plus-btn">+</button>}</h2>
+                <div className="modal-container">
+                    {
+                        props.passives.filter((f, i) => i === 0 || i === 1).map((p, idx) => (
+                    <div key={idx} className="modal-fields">
+                        <label className="modal-labels">Passives { idx === 0 ? ' ' : <button onClick={props.remove_passive(idx)} type="button" className="modal-decrease-button">-</button> }</label>
+                        <input type="text" onChange={props.passive_handle_change(idx)} value={p.passive_name} className="modal-inputs" />
+                    </div>
+                        ))
+                    }
+                        
+                </div>
+            </div>
+        </div>
+        </>
+        )
 }

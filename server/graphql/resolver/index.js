@@ -21,10 +21,12 @@ module.exports = {
   // get Single Object //
   getUser: async args => {
     try {
+
       const users = await User.findById({ _id: args.get }).populate(
         "createdHero savedHero"
       );
-      return MappedUser(users);
+      return MappedHero(users);
+
     } catch (err) {
       console.log(err);
       throw err;
@@ -89,7 +91,7 @@ module.exports = {
         passives: args.passives,
         alive: true,
         race: args.race,
-        creator: "5dbc4237760587191851a3d9"
+        creator: "5dbc3b8906e1362294c87c70"
       });
 
       for (var x in args.skills) {
@@ -100,7 +102,7 @@ module.exports = {
       const result = await hero.save();
 
       createdHeros = MappedHero(result);
-      const creator = await User.findById("5dbc4237760587191851a3d9");
+      const creator = await User.findById("5dbc3b8906e1362294c87c70");
       if (!creator) {
         throw new Error("Creator Not Found");
       }

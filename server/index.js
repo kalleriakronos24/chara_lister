@@ -35,8 +35,10 @@ app.use(
   })
 );
 app.use('/api_hero', hero_controller);
-app.post('/api/save', save_item_controller);
+app.post('/api/save', save_item_controller.save);
 app.get('/hero/:name', test)
+app.post('/user/unsave', save_item_controller.unsave);
+
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useUnifiedTopology", true);

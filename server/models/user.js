@@ -14,7 +14,7 @@ const UserSchema = new Schema({
 
     savedHero : [{
         type : Schema.Types.ObjectId,
-        ref : Hero
+        ref : 'Hero'
     }]
 })
 

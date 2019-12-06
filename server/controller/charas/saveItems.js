@@ -1,20 +1,19 @@
 const SaveItems = require('../../models/user');
 
 
-module.exports = async (req, res) => {
+module.exports.save = async (req, res) => {
 
     try{
         const data = [];
         for(var x in req.body){
             data.push(req.body[x])
         }
-        console.log(data);
-        const request = req.body
-        console.log(request);
-        const save_chara = new SaveItems({
-            savedHero : data
+
+        const save_chara = await SaveItems.updateOne({ _id : '5dbc3b6706e1362294c87c6f' }, {
+            $addToSet : {
+                "savedHero" : data
+            }
         })
-        await save_chara.save();
         await res.status(200).send('OK')
     }
     catch(err){
@@ -22,3 +21,24 @@ module.exports = async (req, res) => {
     }
 
 }  
+
+module.exports.unsave = async (req, res) => {
+    
+    try{
+        const query = await SaveItems.findById(req.body.user_id);
+        console.log(query.savedHero);
+        const filtered_saved_char = query.savedHero.filter(s => s.toString() !== req.body.saved_id);
+        console.log(filtered_saved_char);
+        const query_2 = await SaveItems.updateOne({ _id : req.body.user_id }, 
+            {
+                savedHero : filtered_saved_char
+            }, (err, result) => {
+                console.log('error', err);
+                console.log('result', result);
+            })
+        return query_2;
+    }
+    catch(err){
+        throw err;
+    }
+}

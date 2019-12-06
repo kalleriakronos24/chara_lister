@@ -29,7 +29,9 @@ export default class View extends React.Component {
     
   }
 
-  fetchHero() {
+  fetchHero = () => {
+
+    try {
 
     const query = {
       query: `
@@ -59,7 +61,6 @@ export default class View extends React.Component {
       }
     })
       .then(res => {
-        console.log(res);
         return res.json();
       })
       .then(res => {
@@ -81,12 +82,23 @@ export default class View extends React.Component {
       .catch(err => {
         console.log(err);
       });
+    }
+    catch(error) {
+      throw error;
+    }
   }
-  handleSearch = event => {
+  handleSearch = async event => {
+    try{
+    const no_idea = event.target.value.toLowerCase();
+    console.log(no_idea)
     this.setState({
-      search : event.target.value,
+      search : no_idea,
       isSearch : true
     })
+  }
+  catch(error){
+    throw error;
+    }
   }
    
   render() {
@@ -123,7 +135,7 @@ export default class View extends React.Component {
             </span>
           </div>
 
-          <span className="skills">Ability : </span>
+          <span className="skills">Skills : </span>
 
           <div className="skill-list-container">
             {this.state.hero.skills.map((s, idx) => (

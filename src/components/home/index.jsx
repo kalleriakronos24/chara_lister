@@ -6,30 +6,41 @@ import FilterOptions from '../filter/options/index';
 import Preloading from '../loader/pre/index';
 import PageNotFound from '../notfoundpage/index';
 import CHARA_API_URL from '../../api/url';
+import Save from '../others/save.jsx';
 
 export default class HeroList extends Component {
     constructor(props){
         super(props)
         this.state = {
-            heros : [],
+            charas : [],
             isLoading : true,
             isZeroResult : true,
             isFilter : false,
             filter_type : '',
             filter_opt : '',
-            user_data : ''
+            user_data : {
+                _id : '',
+                name : '',
+                savedChara : []
+            },
+            saved : false
         }
     }
     componentDidMount(){
+        this.validateUser();
         this.fetchHero();
+    }
+    componentDidUpdate(){
+        this.checkIfUserHasSavedChara();
     }
      
     handleSaveChara = idx => event => {
+
         event.preventDefault();
-        const { heros } = this.state;
+        const { charas } = this.state;
         const data = [];
         
-        heros.filter((h, i) => {
+        charas.filter((h, i) => {
             if(idx === i){
                 data.push(h)
             }
@@ -42,6 +53,34 @@ export default class HeroList extends Component {
                 'Content-Type' : 'application/json'
             },
             body : JSON.stringify(data)
+        })
+    }
+
+    handleUnsaveChara = id => event => {
+        event.preventDefault();
+        const { user_data } = this.state;
+
+        const data = {
+            'user_id' : user_data._id,
+            'saved_id' : id
+        }
+        console.log(data);
+
+        fetch('http://localhost:3005/user/unsave', {
+            method : "POST",
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(data)
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(error => {
+            console.log(error);
         })
     }
 
@@ -59,45 +98,46 @@ export default class HeroList extends Component {
 
     handleProceedFilter = () => {
 
-        const { heros, filter_opt } = this.state;
+        const { charas, filter_opt } = this.state;
 
         switch(filter_opt){
 
             case 'name_asc':
-                let name_asc = heros.sort((a,b) => {
+                let name_asc = charas.sort((a,b) => {
                     const val_a = a.name.toUpperCase()
                     const val_b = b.name.toUpperCase()
                     return val_b.localeCompare(val_a)
                 })
                 this.setState({
-                    heros : name_asc
+                    charas : name_asc
                 })
                 break;
             case 'name_desc':
-                let name_desc = heros.sort((a,b) => {
+                let name_desc = charas.sort((a,b) => {
                     const val_a = a.name.toUpperCase()
                     const val_b = b.name.toUpperCase()
                     return val_a.localeCompare(val_b)
                 })
                 this.setState({
-                    heros : name_desc
+                    charas : name_desc
                 })
                 break;
             default:
 
-                let def_opt = heros.sort((a,b) => {
+                let def_opt = charas.sort((a,b) => {
                     const val_a = a.name.toUpperCase()
                     const val_b = b.name.toUpperCase()
                     return val_b.localeCompare(val_a)
                 })
                 this.setState({
-                    heros : def_opt
+                    charas : def_opt
                 });
             }
     }
     
     fetchHero = () => {
         
+        try {
         const query = {
             query : `
                 query {
@@ -127,7 +167,7 @@ export default class HeroList extends Component {
         })
         .then(res => {
             this.setState({ 
-                heros : res.data.Heros,
+                charas : res.data.Heros,
                 isLoading : false,
                 isZeroResult : false
             })
@@ -136,35 +176,50 @@ export default class HeroList extends Component {
             console.log(err);
         })
     }
+    catch(error){
+        throw error;
+    }
+}
+
 
     validateUser = () => {
-        const { user_data } = this.state;
-        const query = {
-            query : `
-
-            getUser(get : '5dbc4237760587191851a3d9'){
+    
+    const query_2 = {
+        query:
+        `
+        query{
+            getUser(get : "5dbc3b6706e1362294c87c6f"){
                 _id
+              name
+              savedHero{
                 name
-                savedItems{
-                    name
-                }
+              }
             }
+          }
 
-            `
-        }
-        fetch('http://localhost:3005/data/api', {
-            method : 'POST',
-            body : JSON.stringify(query),
-            header : {
-
-            }
+        `
+      };
+        fetch(CHARA_API_URL, {
+            method : "POST",
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(query_2)
         })
         .then(res => {
+            console.log(res)
             return res.json();
         })
         .then(res => {
+
+            const data = res.data.getUser;
+
             this.setState({
-                user_data : res.get.Users
+                user_data : {
+                    _id : data._id,
+                    name : data.name,
+                    savedHero : data.savedHero
+                }
             })
         })
         .catch(error => {
@@ -172,11 +227,28 @@ export default class HeroList extends Component {
         })
     }
 
+    checkIfUserHasSavedChara = () => {
+
+        const { user_data, charas } = this.state;
+
+        const user_saved_chara = user_data.savedHero.map(sh => {
+            charas.map(h => {
+                if(sh.name !== h.name){
+                    console.log('gada yg sama')
+                }else{
+                    console.log('ada sama')
+                }
+                return h;
+            })
+            return sh;
+        })
+        return user_saved_chara;
+    }
 
     render() {
 
-        const { isZeroResult,isLoading } = this.state;
-
+        const { isZeroResult,isLoading, user_data } = this.state;
+        
         return (
             <>
 
@@ -185,7 +257,7 @@ export default class HeroList extends Component {
             tar="Add New Chara"
             home="add-new-hero"
             about="What's this ?"
-            isSearchActive={false}
+            searchActive={false}
             />
 
             
@@ -208,12 +280,12 @@ export default class HeroList extends Component {
                     </div>
         <div> 
                {
-                   this.state.heros.map((hero, i) => {
+                   this.state.charas.map((char, i) => {
                        return (
                         <LazyLoad height={100} offset={[-100, 100]} key={i}>
-                          <div className="hero-container" style={{ backgroundImage : `url("${hero.thumbnail}")`, backgroundSize : 'cover' }}>
-                              <button key={i}  type="button" onClick={this.handleSaveChara(i)} className="btn-save">S</button>
-                              <Link to={`/view/${hero.name}`} className="hero-name" key={hero.name}>{hero.name}</Link>
+                          <div className="chara-grid" style={{ backgroundImage : `url("${char.thumbnail}")`, backgroundSize : 'cover' }}>
+                          <Save index={i} save_handler={this.handleSaveChara(i)} unsave_handler={this.handleUnsaveChara(char._id)} saved_char={user_data.savedHero} char_name={char.name} />
+                              <Link to={`/view/${char.name}`} style={{ textTransform : 'capitalize' }} className="hero-name" key={char.name}>{char.name}</Link>
                           </div>
                         </LazyLoad>
                        )

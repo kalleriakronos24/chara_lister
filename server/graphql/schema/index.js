@@ -1,15 +1,5 @@
 const { buildSchema }  = require('graphql');
 
-const _Hero = {
-    'name' : String,
-     'hp' : Number,
-     'mana' : Number,
-     'skills' : [],
-     'passives' : [],
-     'alive' : Boolean,
-     'race' : []
-} 
-const random_object = {};
 
 module.exports.graphQLSchema = buildSchema(`
 
@@ -20,7 +10,7 @@ type Hero {
     mana : Int
     sprite : [String]
     skills : [Skills]
-    passives : [String]
+    passives : [passive]!
     alive : Boolean
     race : String!
     creator : User!
@@ -37,6 +27,9 @@ type SavedItems {
 type Elements{
     element_name : String!
 }
+type passive{
+    passive_name : String!
+}
 
 type Skills{
     skill_name:String
@@ -48,6 +41,7 @@ type User {
     name : String!
     contributor : [String]
     createdHero : [Hero!]
+    savedHero : [Hero!]
 }
 input UserInput {
     name : String!

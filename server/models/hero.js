@@ -33,10 +33,9 @@ const HeroSchema = new Schema({
         type : [skill],
         required : true
     },
-    passives : {
-        type : Array,
-        required : true
-    },
+    passives : [{
+        passive_name : String
+    }],
     alive : {
         type : Boolean,
         required : true

@@ -8,16 +8,21 @@ class Header extends Component {
         super(props);
         this.state = {}
     }
+    reloadPage = () => {
+        window.location.reload();
+    }
     render(){
         const props = this.props;
         return (
             <div className="header">
                 <ul>
-                    <li style={{ position: 'absolute', marginLeft : '150px'}}>{props.title}</li>
+                    <li style={{ position: 'absolute', marginLeft : '150px', textTransform : 'capitalize' }}>{props.title}</li>
                     <li style={{ position:'absolute', marginLeft: '850px' }}><Link className="nav-link" to={`${props.home}`}>{this.props.tar}</Link></li>
                     <li style={{ position:'absolute', marginLeft : '1100px' }}><Link className="nav-link" to="/about">{props.about}</Link></li>
+                 
                     {props.searchActive ? <li style={{ position:'absolute', marginLeft : '1100px' }}><input type="text" onChange={props.handleChangeSearch} className="search-input" value={props.search} placeholder="Search.." /></li> : '' }
-                    {props.searchActive ? <li style={{ position:'absolute', marginLeft : '1100px' }}><Link className="nav-link" to={`/view/${props.search_val}`}>Go.</Link></li> : '' }
+                    {props.searchActive ? <li style={{ position:'absolute', marginLeft : '1100px' }}><Link onClick={this.reloadPage} className="nav-link" to={`/view/${props.search_val}`}>Go.</Link></li> : '' }
+                    
                 </ul>
             </div>
         )
@@ -29,7 +34,7 @@ export default Header;
 Header.propTypes = {
     title : PropTypes.string.isRequired,
     tar : PropTypes.string.isRequired,
-    about : PropTypes.string.isRequired,
+    about : PropTypes.string,
     searchActive : PropTypes.bool.isRequired,
     handleChangeSearch : PropTypes.func,
     search_val : PropTypes.string,

@@ -63,7 +63,7 @@ router.post(
         req.files["thumbnail"][0].filename;
 
       const hero = new Hero({
-        name: req.body.hero_name,
+        name: req.body.hero_name.toLowerCase(),
         hp: req.body.hp,
         mana: req.body.mana,
         race : req.body.race,
@@ -94,6 +94,66 @@ router.post(
       }
       await creator.createdHero.push(hero);
       await creator.save();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+router.post(
+  "/chara/edit/:name",
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "sprite", maxCount: 4 }
+  ]),
+  async (req, res, next) => {
+    try {
+      console.table(req.body);
+      console.log(req.files);
+      console.log(req.files["thumbnail"][0].filename);
+
+      const sprites = [];
+      const url = req.protocol + "://" + req.get("host");
+      for (var i = 0; i < req.files["sprite"].length; i++) {
+        sprites.push(url + "/public/" + req.files["sprite"][i].filename);
+      }
+
+      const thumb =
+        req.protocol +
+        "://" +
+        req.get("host") +
+        "/public/" +
+        req.files["thumbnail"][0].filename;
+      
+      let req_body_skills = [];
+      let req_body_elements = [];
+      let req_body_passives = [];
+
+      for (var i in req.body.skills) {
+      req_body_skills.push(JSON.parse(req.body.skills[i]));
+      }
+      for(var x in req.body.passives){
+       req_body_passives.push(JSON.parse(req.body.passives[x]));
+      }
+      for(var z in req.body.elements){
+       req_body_elements.push(JSON.parse(req.body.elements[z]));
+      }
+
+      const query = await Hero.updateOne({ name : req.params.name }, 
+        {
+        name: req.body.hero_name.toLowerCase(),
+        race : req.body.race,
+        about: req.body.about,
+        skills : req_body_skills,
+        elements : req_body_elements,
+        passives : req_body_passives,
+        thumbnail: thumb,
+        sprite: sprites,
+        }, (err, result) => {
+          console.log(err);
+          console.log(result);
+        })
+        return query;
     } catch (err) {
       console.log(err);
     }

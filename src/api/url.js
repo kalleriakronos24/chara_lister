@@ -1,4 +1,4 @@
-import React from 'react';
+'use-strict'
 
 const CHARA_API_URL = 'http://localhost:3005/data/api';
 
