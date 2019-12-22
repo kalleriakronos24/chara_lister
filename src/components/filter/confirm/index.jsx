@@ -12,7 +12,6 @@ export default class ConfirmFilter extends Component {
 
         const props = this.props;
         const heros = props.state;
-
         switch(props.opt_type){
 
             case 'name_asc':

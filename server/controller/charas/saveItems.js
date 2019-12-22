@@ -1,4 +1,4 @@
-const SaveItems = require('../../models/user');
+const SaveItems = require('../../models/user').User;
 
 
 module.exports.save = async (req, res) => {
@@ -26,9 +26,9 @@ module.exports.unsave = async (req, res) => {
     
     try{
         const query = await SaveItems.findById(req.body.user_id);
-        console.log(query.savedHero);
+
         const filtered_saved_char = query.savedHero.filter(s => s.toString() !== req.body.saved_id);
-        console.log(filtered_saved_char);
+
         const query_2 = await SaveItems.updateOne({ _id : req.body.user_id }, 
             {
                 savedHero : filtered_saved_char

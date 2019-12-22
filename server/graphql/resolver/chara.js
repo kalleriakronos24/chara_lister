@@ -1,5 +1,5 @@
 const Hero = require("../../models/hero");
-const Creator = require("../../models/user");
+const Creator = require("../../models/user").User;
 const path = require("path");
 const multer = require("multer");
 const express = require("express");

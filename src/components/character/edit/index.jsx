@@ -345,119 +345,132 @@ export default class EditChara extends React.Component {
 
     render(){
         
-        const { elements, passives, skills } = this.state;
+        const { elements, passives, skills, charas } = this.state;
 
+        charas.map(async c => {
 
-        return ( 
-            
-            <>
-            
-            <Header 
-            title={`Edit : ${this.props.match.params.name}`}
-            home="/"
-            tar="Home"
-            about="What's this ?"
-            searchActive={false}
-            />
-            
-            <EditModalElements
-            elements={elements}
-            element_handle_change={this.handleElementsChange}
-            modal_headingz="Elements"
-            remove_element={this.handleRemoveElements}
-            add_more_element={this.handleAddMoreElements}
-            
-            />
-            
-            <EditModalPassives
-            passives={passives}
-            passive_handle_change={this.handlePassiveAChange}
-            modal_headingz="Passives"
-            remove_passive={this.handleRemovePassive}
-            add_more_passive={this.handleAddMorePassives}
-            />
+            const param = this.props.match.params.name;
 
-            <EditModalSkills
-            skills={skills}
-            skill_handle_change={this.handleSkillsChange}
-            modal_headingz="Skills"
-            remove_skill={this.handleRemoveSkills}
-            add_more_skill={this.handleAddMoreSkills}
-            
-            /> 
-
-            
-             
-
-
-            <form onSubmit={this.handleSubmit} className="container-add-hero">
+            if(param !== c.name){
+                return <PageNotFound />
+            } else {
                 
+                $('#result-not-found').css('display','none')
+                $('#result-not-found').css('visibility','hidden')
 
-                <div className="chara-name-container">
-
-                <label className="chara-name-label">Chara Name</label>
-                <input type="text" autoComplete="off" style={{ textTransform : 'capitalize'}} className="chara-name-input" onChange={this.handleHeroNameChange} value={`${this.state.name ? this.state.name : ''}`} placeholder="Ex. Gratia" />
-
-                </div>
-
-                    <div className="skills-container">
-                <label className="skills-label">Skills </label>
-                <input className="skills-input" id="btn-show-modal-skills" onClick={this.openSkillModal} autoComplete="off" type="button" value="Click Here.." name="hero-name" />
-                </div>
-                
-                    <div className="passives-container">
-                <label className="passives-container-label">Passives</label>
-                <input type="button" id="btn-show-modal-passives" onClick={this.openPassiveModal} className="passives-container-input" autoComplete="off" value="Click Here.." placeholder="" name="hero-name" />
-                    </div>
-
-                <div className="main-image-container">
-
-                <label className="main-img-label">Main Image </label>
-                <input type="file" onChange={this.handleMainImage} className="main-img-input" autoComplete="off" name="thumbnail" />
-
-                </div> 
-
-
-                <div className="sprites-container">
-
-                <label className="sprites-label">Battle Pose <small>( Max : 2 )</small></label>
-                <input type="file" onChange={this.handlespritesChange} className="sprites-input" autoComplete="off" name="thumbnail" multiple />
-
-                </div>
-
-                <div className="race-container">
-
-                <label className="race-label">Race : </label>
-                <input type="text" onChange={this.handleRaceChange} className="race-input" value={`${this.state.race ? this.state.race : ''}`} autoComplete="off" />
-
-                </div>
-               
-                  
-                <div className="elements-container">
-                    <label className="elements-label">Elements <button className="btn-modal-elements">+</button></label>
-                        <input type="button" className="elements-input" onClick={this.openElementsModal} id="btn-show-modal-elements" value="Click Here.." autoComplete="off" />
-                </div>
-
-                <div className="about-container">
-
-                <label className="about-label">About: </label>
-                <input type="text" style={{ textTransform: 'capitalize' }} className="about-input" onChange={this.handleAboutChange} value={`${this.state.about ? this.state.about : ''}`} autoComplete="off" />
-
-                </div>
-                
-                <button className="add-hero-button-submit" type="submit">Submit</button>
-                
-                <button className="add-hero-button-reset" onClick={this.handleResetButton} type="button">Reset</button>
-            </form>
-                
-                <div className="add-button-container">
-                        <button type="button" className="add-new-skills">What</button>
-                        <button type="button" className="add-new-passives">Are</button>
-                        <button type="button" className="add-new-races">These For ?</button>
-                </div>
+                return ( 
             
-            </>
-        )
+                    <>
+                    
+                    <Header 
+                    title={`Edit : ${this.props.match.params.name}`}
+                    home="/"
+                    tar="Home"
+                    about="What's this ?"
+                    searchActive={false}
+                    />
+                    
+                    <EditModalElements
+                    elements={elements}
+                    element_handle_change={this.handleElementsChange}
+                    modal_headingz="Elements"
+                    remove_element={this.handleRemoveElements}
+                    add_more_element={this.handleAddMoreElements}
+                    
+                    />
+                    
+                    <EditModalPassives
+                    passives={passives}
+                    passive_handle_change={this.handlePassiveAChange}
+                    modal_headingz="Passives"
+                    remove_passive={this.handleRemovePassive}
+                    add_more_passive={this.handleAddMorePassives}
+                    />
+        
+                    <EditModalSkills
+                    skills={skills}
+                    skill_handle_change={this.handleSkillsChange}
+                    modal_headingz="Skills"
+                    remove_skill={this.handleRemoveSkills}
+                    add_more_skill={this.handleAddMoreSkills}
+                    
+                    /> 
+        
+                    
+                     
+        
+        
+                    <form onSubmit={this.handleSubmit} className="container-add-hero">
+                        
+        
+                        <div className="chara-name-container">
+        
+                        <label className="chara-name-label">Chara Name</label>
+                        <input type="text" autoComplete="off" style={{ textTransform : 'capitalize'}} className="chara-name-input" onChange={this.handleHeroNameChange} value={`${this.state.name ? this.state.name : ''}`} placeholder="Ex. Gratia" />
+        
+                        </div>
+        
+                            <div className="skills-container">
+                        <label className="skills-label">Skills </label>
+                        <input className="skills-input" id="btn-show-modal-skills" onClick={this.openSkillModal} autoComplete="off" type="button" value="Click Here.." name="hero-name" />
+                        </div>
+                        
+                            <div className="passives-container">
+                        <label className="passives-container-label">Passives</label>
+                        <input type="button" id="btn-show-modal-passives" onClick={this.openPassiveModal} className="passives-container-input" autoComplete="off" value="Click Here.." placeholder="" name="hero-name" />
+                            </div>
+        
+                        <div className="main-image-container">
+        
+                        <label className="main-img-label">Main Image </label>
+                        <input type="file" onChange={this.handleMainImage} className="main-img-input" autoComplete="off" name="thumbnail" />
+        
+                        </div> 
+        
+        
+                        <div className="sprites-container">
+        
+                        <label className="sprites-label">Battle Pose <small>( Max : 2 )</small></label>
+                        <input type="file" onChange={this.handlespritesChange} className="sprites-input" autoComplete="off" name="thumbnail" multiple />
+        
+                        </div>
+        
+                        <div className="race-container">
+        
+                        <label className="race-label">Race : </label>
+                        <input type="text" onChange={this.handleRaceChange} className="race-input" value={`${this.state.race ? this.state.race : ''}`} autoComplete="off" />
+        
+                        </div>
+                       
+                          
+                        <div className="elements-container">
+                            <label className="elements-label">Elements <button className="btn-modal-elements">+</button></label>
+                                <input type="button" className="elements-input" onClick={this.openElementsModal} id="btn-show-modal-elements" value="Click Here.." autoComplete="off" />
+                        </div>
+        
+                        <div className="about-container">
+        
+                        <label className="about-label">About: </label>
+                        <input type="text" style={{ textTransform: 'capitalize' }} className="about-input" onChange={this.handleAboutChange} value={`${this.state.about ? this.state.about : ''}`} autoComplete="off" />
+        
+                        </div>
+                        
+                        <button className="add-hero-button-submit" type="submit">Submit</button>
+                        
+                        <button className="add-hero-button-reset" onClick={this.handleResetButton} type="button">Reset</button>
+                    </form>
+                        
+                        <div className="add-button-container">
+                                <button type="button" className="add-new-skills">What</button>
+                                <button type="button" className="add-new-passives">Are</button>
+                                <button type="button" className="add-new-races">These For ?</button>
+                        </div>
+                    
+                    </>
+                )
+        
+            }
 
+        })              
     }
 }

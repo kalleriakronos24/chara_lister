@@ -1,5 +1,6 @@
 const Hero = require("../../models/hero");
-const User = require("../../models/user");
+const user = require("../../models/user");
+const User = user.User
 const SaveItems = require('../../models/savedItems');
 
 const MappedHero = hero => {
