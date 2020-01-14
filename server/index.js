@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-
+//   test
 app.use(cookieParser());
 app.use(session({
     key: 'user_session_id',
